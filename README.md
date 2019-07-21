@@ -1,7 +1,7 @@
 # CtxMenu (Javascript)
 Customizable right click context menus for your website.
 
-[demo](https://nilssoderman.com/)
+[demo](https://nilssoderman.com/code/ctxmenu)
 
 ## Installation
 
