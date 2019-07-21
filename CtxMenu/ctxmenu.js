@@ -95,11 +95,11 @@ class CtxMenuManagerClass {
 		if (this._ctxMenus.has(element)) {
 			return this._ctxMenus.get(element);
 		}
-		else if(this._ctxMenus.has(element.id)){
-			return this._ctxMenus.get(element.id);
+		else if(this._ctxMenus.has("#"+element.id)){
+			return this._ctxMenus.get("#"+element.id);
 		}
-		else if(this._ctxMenus.has(element.className)){
-			return this._ctxMenus.get(element.className);
+		else if(this._ctxMenus.has("."+element.className)){
+			return this._ctxMenus.get("."+element.className);
 		}
 		else if (this._ctxMenus.has(element.nodeName)) {
 			return this._ctxMenus.get(element.nodeName);
@@ -254,28 +254,14 @@ class CtxMenuClass {
 
 }
 
-function CtxMenu(element = undefined, className = undefined, id = undefined, nodeName = undefined){
-	// Initialize a new Ctx Menu, or return if it already exists
-	var ctxAttach = undefined;
-	if (element != undefined){
-		ctxAttach = element;
+function CtxMenu(element){
+	if (element == undefined){
+		element = document;
 	}
-	else if (className != undefined){
-		ctxAttach = "." + className;
+	if (ctxMenuManager.getMenuFromElement(element) != undefined) {
+		return ctxMenuManager.getMenuFromElement(element);
 	}
-	else if (id != undefined){
-		ctxAttach = id;
-	}
-	else if (nodeName){
-		ctxAttach = nodeName;
-	}else {
-		ctxAttach = document;
-	}
-
-	if (ctxMenuManager.getMenuFromElement(ctxAttach) != undefined) {
-		return ctxMenuManager.getMenuFromElement(ctxAttach);
-	}
-	return ctxMenuManager.createNewMenu(ctxAttach);
+	return ctxMenuManager.createNewMenu(element);
 
 }
 
