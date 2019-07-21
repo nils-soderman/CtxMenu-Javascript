@@ -2,29 +2,77 @@
 <html>
 
 <head>
-	
+	<title>CtxMenu Example Page</title>
 </head>
 
 <body>
 
+	<h2>CtxMenu Example</h2>
+	<p>Right click anywhere on this page to bring up the context menu.</p>
+	<br>
+	<div id="CustomContextMenu" style="background:#6cc9d8;width:300px;height:50px;">
+		This div has a special context menu
+	</div>
+	<br><br>
+	<a href="https://github.com/nils-soderman/Javascript-contextMenu">GitHub Page</a>
 
 </body>
 
-
+<!-- Load the plugin -->
 <script src="../CtxMenu/CtxMenu.js"></script>
+
 <script>
 
-function ContextMenuExampleFunction(){
-	// Our function to be called when the user selects "Hello World" in the custom context menu.
-	Alert("Hello World!");
-}
 
-// Create a context menu for the entire page
-var ContextMenu = new CtxMenu();
+	//  -  -  -  -  -  -  -  -  //
+	//		Example Menu One	  	//
+	//  -  -  -  -  -  -  -  -  //
 
-// Add our custom function to the menu
-var ContextMenuItem1 = new CtxMenuItem(ContextMenuExampleFunction, "Hello World");						
-ContextMenu.addItem(ContextMenuItem1);
+	// Our function to be called when the user selects "Hello World!" in the custom context menu.
+	function ContextMenuExampleFunction(){
+		alert("Hello World!");
+	}
+
+
+	// Initialize a context menu for the entire page
+	var contextMenu = CtxMenu();
+
+	// Add our custom function to the menu
+	contextMenu.addItem("Hello World", ContextMenuExampleFunction);
+
+	// Add a seperator
+	contextMenu.addSeperator();
+
+	// Add a second item to the menu, this time with an icon
+	contextMenu.addItem("Reload Page",
+													function(){
+														location.reload();
+													},
+													Icon = "icon.svg"
+													);
+
+
+
+
+	//  -  -  -  -  -  -  -  -  //
+	//		Example Menu Two	  	//
+	//  -  -  -  -  -  -  -  -  //
+
+
+	// Example function to change the background color of an element
+	// Note that the first argument in a function called from the ctx menu will be the element that was clicked on.
+	function ChangeElementColor(element){
+		var color = [
+			Math.random() * 255,
+			Math.random() * 255,
+			Math.random() * 255
+		];
+		element.style.background = "rgb(" + color + ")"
+	}
+
+	// Initialize a special custom menu for the "CustomContextMenu" div
+	var contextMenuTwo = CtxMenu(id="CustomContextMenu");
+	contextMenuTwo.addItem("Change Color", ChangeElementColor);
 
 </script>
 

@@ -1,76 +1,292 @@
+/*
+* CtxMenu
+* Author: Nils Soderman <contact@nilssoderman.com>
+* Repo: https://github.com/nils-soderman/Javascript-contextMenu
+*/
 
+ECtxMenuNames = {
+	menu: 			"ctx-menu-wrapper",
+	item: 			"ctx-menu-item",
+	seperator:	"ctx-menu-seperator",
+	hasIcon: 		"ctx-menu-hasIcon"
+};
+
+
+class CtxMenuManagerClass {
+	constructor(){
+		this._currentMenuVisible = null;
+		this._ctxMenus = new Map();
+
+		document.addEventListener('contextmenu', this._eventOpenMenu.bind(this));
+
+		var scripts = document.getElementsByTagName('script');
+		var path = scripts[scripts.length - 1].src.split('?')[0];
+		var CtxMenuDirectory = path.split('/').slice(0, -1).join('/') + '/';
+
+		// Load the stylesheet
+		var link = document.createElement( "link" );
+		link.href = CtxMenuDirectory + "CtxMenu.css";
+		link.type = "text/css";
+		link.rel = "stylesheet";
+		document.getElementsByTagName("head")[0].appendChild(link);
+
+	};
+
+	_eventOpenMenu(e){
+		var menu = null;
+		if (e.path != undefined) {
+			 menu = this._traceCtxMenu(e.path);
+			 var elementClicked = e.path[0];
+		} else {
+			menu = this._msEdgeTraceCtxMenu(e.target);
+			var elementClicked = e.target;
+		}
+
+		if (menu != null) {
+			// Open the menu
+			this.closeCurrentlyOpenedMenu();
+			menu._elementClicked = elementClicked;
+			menu.openMenu(e.clientX, e.clientY);
+			this._currentMenuVisible = menu;
+			document.addEventListener("click", CtxCloseCurrentlyOpenedMenus);
+			e.preventDefault();
+			if(menu._openEventListener != undefined) {
+				menu._openEventListener();
+			}
+		}
+
+	};
+
+	closeMenu(menu){
+		//this.ctxMenuBackground.style.display = "none";
+		menu.closeMenu();
+		this._currentMenuVisible = null;
+		document.removeEventListener("click", CtxCloseCurrentlyOpenedMenus);
+	};
+
+	closeCurrentlyOpenedMenu(){
+		if (this._currentMenuVisible != null){
+			this.closeMenu(this._currentMenuVisible);
+		}
+	};
+
+	_traceCtxMenu(path){
+		for (var i = 0; i < path.length; ++i) {
+			var menu = this._ctxMenusHas(path[i]);
+			if (menu != null){
+				return menu;
+			}
+		}
+		return null;
+	};
+
+	_msEdgeTraceCtxMenu(element){
+		while (element != null) {
+			var menu = this._ctxMenusHas(element);
+			if (menu != null){
+				return menu;
+			}
+			element = element.parentNode;
+		}
+		return null;
+	}
+
+	_ctxMenusHas(element){
+		if (this._ctxMenus.has(element)) {
+			return this._ctxMenus.get(element);
+		}
+		else if(this._ctxMenus.has(element.id)){
+			return this._ctxMenus.get(element.id);
+		}
+		else if(this._ctxMenus.has(element.className)){
+			return this._ctxMenus.get(element.className);
+		}
+		else if (this._ctxMenus.has(element.nodeName)) {
+			return this._ctxMenus.get(element.nodeName);
+		}
+		return null;
+	}
+
+	getMenuFromElement(element){
+		return this._ctxMenus.get(element);
+	};
+
+	createNewMenu(element){
+		var menu = new CtxMenuClass(element);
+		this._ctxMenus.set(element, menu);
+		return menu;
+	};
+
+	blockContextMenu(element){
+		this._ctxMenus(element,  null);
+	};
+
+};
 
 class CtxMenuItem {
-	contructor(Function, Text, Category){
-		this.Function = Function;
-		this.Text = Text;
-		this.Category = Category;
+	constructor(text, customFunction, icon) {
+		this.function = customFunction;
+		this.text = text;
+
+		this.element = document.createElement("div");
+		this.element.className = ECtxMenuNames.item;
+
+		var iconElement = document.createElement("img");
+		if (icon != undefined && icon != null) {
+			iconElement.src = icon;
+			this.bHasIcon = true;
+		} else {
+			this.bHasIcon = false;
+		}
+		this.element.appendChild(iconElement);
+		this.element.innerHTML += this.text;
+
 	}
 }
 
+class CtxMenuClass {
+	constructor(element){
 
-class CtxMenu {
-	constructor(Element){
-		if (Element == undefined) {
-			Element = document;
-		}
-		
-		this.Element = Element;
-		this.Items = {}
-		
-		
-		this._overrideContextMenu(this.Element);
-		this.MenuContainer = this.GenerateHtml();
-		this.hideMenu();
-		
+		// Add the html to the body and hide it
+		this.menuContainer = document.createElement("div");
+		this.menuContainer.className = ECtxMenuNames.menu;
+		document.body.appendChild(this.menuContainer);
+		this.closeMenu();
+
+		this._elementClicked = undefined;
+
+		// Event listeners
+		this._openEventListener = undefined;
+		this._closeEventListener = undefined;
+		this._clickEventListener = undefined;
 	}
-	
-	addItem(Item) {
+
+	addItem(text, customFunction, icon = undefined) {
 		// Add an item to the menu
-		this.Items[Item.Category] = Item;
+		var item = this._createMenuItem(text, customFunction, icon);
+		this.menuContainer.appendChild(item.element);
+		return item;
 	}
-	
-	_overrideContextMenu(Element) {
-		// Override the default behaviour of the element
-		if (Element.addEventListener) {
-		Element.addEventListener('contextmenu', function(e) {
-			this.openContextWidow(e.clientX, e.clientY)
-			e.preventDefault();
-		}.bind(this), false);
-		} 
-		else {
-			Element.attachEvent('oncontextmenu', function() {
-				window.event.returnValue = false;
-			}.bind(this)
-			);
+
+	insertItem(index, text, customFunction, icon = undefined){
+		var item = this._createMenuItem(text, customFunction, icon);
+		this.menuContainer.insertBefore(item.element, this.menuContainer.childNodes[index]);
+		return item;
+	}
+
+	addSeperator(){
+		// Add a seperator
+		var seperator = document.createElement("div");
+		seperator.className = ECtxMenuNames.seperator;
+		this.menuContainer.appendChild(seperator);
+	}
+
+	removeItem(item) {
+		// Remove an item from the menu
+		this.menuContainer.removeChild(item.element);
+	}
+
+	addEventListener(type, listener){
+		if (type == "open"){
+			this._openEventListener = Listener;
+		}
+		else if (type == "close") {
+			this._closeEventListener = Listener;
+		}
+		else if (type == "click") {
+			this._clickEventListener = Listener;
 		}
 	}
-	
-	openContextWidow(PosX, PosY){
-		// Open the context window at given position
-		console.log(PosX)
-		this.showMenu();
+
+	openMenu(x, y){
+		this.menuContainer.style.display = "block";
+		// Set the screen position of the menu
+
+		// Ensure the menu doesn't go outside of the widnow
+		if (x + this.menuContainer.offsetWidth > window.innerWidth) {
+			x = window.innerWidth - this.menuContainer.offsetWidth - 1;
+		}
+
+		if (y + this.menuContainer.offsetHeight > window.innerHeight) {
+			y = window.innerHeight - this.menuContainer.offsetHeight - 1;
+		}
+
+		this.menuContainer.style.left = x + "px";
+		this.menuContainer.style.top = y + "px";
 	}
-	
-	showMenu(){
-		this.MenuContainer.style.display = "block";
+
+	closeMenu(){
+		// Hide the menu
+		this.menuContainer.style.left = "0px";
+		this.menuContainer.style.top = "0px";
+		this.menuContainer.style.display = "none";
+		if (this._closeEventListener != undefined){
+			this._closeEventListener();
+		}
 	}
-	
-	hideMenu(){
-		this.MenuContainer.style.display = "none";
+
+	_createMenuItem(text, customFunction, icon){
+		var item = new CtxMenuItem(text, customFunction, icon);
+		item.element.addEventListener("click", function(){
+			this._callItem(item);
+		}.bind(this));
+
+		if (item.bHasIcon){
+			this.menuContainer.classList.add(ECtxMenuNames.hasIcon);
+		}
+
+		return item;
 	}
-	
-	GenerateHtml() {
-		var MenuContainer = document.createElement("div");
-		MenuContainer.className = "ctx-menu-wrapper";
-		document.body.appendChild(MenuContainer);
-		return MenuContainer;
+
+	_callItem(item){
+		// Called when an item has been clicked
+		this.closeMenu();
+		// Delay function one tick so the page has time to redraw the page and hide the context menu
+		setTimeout(function(){
+			item.function(this._elementClicked);
+			if (this._clickEventListener != undefined) {
+				this._clickEventListener(item);
+			}
+		}.bind(this), 1);
+
+
 	}
-	
-	
-	
-	
-	
+
 }
 
+function CtxMenu(element = undefined, className = undefined, id = undefined, nodeName = undefined){
+	// Initialize a new Ctx Menu, or return if it already exists
+	var ctxAttach = undefined;
+	if (element != undefined){
+		ctxAttach = element;
+	}
+	else if (className != undefined){
+		ctxAttach = "." + className;
+	}
+	else if (id != undefined){
+		ctxAttach = id;
+	}
+	else if (nodeName){
+		ctxAttach = nodeName;
+	}else {
+		ctxAttach = document;
+	}
 
+	if (ctxMenuManager.getMenuFromElement(ctxAttach) != undefined) {
+		return ctxMenuManager.getMenuFromElement(ctxAttach);
+	}
+	return ctxMenuManager.createNewMenu(ctxAttach);
+
+}
+
+function CtxMenuBlock(element){
+	// Block the context menu from appearing on an element
+	ctxMenuManager.blockContextMenu(element);
+}
+
+function CtxCloseCurrentlyOpenedMenus(){
+	ctxMenuManager.closeCurrentlyOpenedMenu();
+}
+
+// Initialize the ctxMenuManager
+var ctxMenuManager = new CtxMenuManagerClass();
