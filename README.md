@@ -53,10 +53,42 @@ var contextMenu = CtxMenu(myElement);
 
 ### CtxMenu Functions:
 
-**addItem()**
+**addItem(**
+text, function, ?icon **)**
+
+_Appends a new item to the menu._
 
 | Arguments | Description |
 | --- | --- |
 | text | The text that will be displayed in the menu |
 | function | The function to be called when the item is clicked |
 | icon | Url to an icon to be displayed before the text |
+
+```javascript
+myContextMenu.addItem("Text Here", myFunction, "myIcon.png");
+```
+
+
+**insertItem(**
+index, text, function, icon **)**
+
+_Insert a new item into the menu at given position_
+
+| Arguments | Description |
+| --- | --- |
+| index | The list index where the item will be placed |
+| text | The text that will be displayed in the menu |
+| function | The function to be called when the item is clicked |
+| icon | Url to an icon to be displayed before the text |
+
+```javascript
+myContextMenu.addItem(0, "Text Here", myFunction, "myIcon.png");
+```
+
+
+**addSeperator()**
+
+_Adds a horizontal line to the menu_
+```javascript
+myContextMenu.addSeperator();
+```
