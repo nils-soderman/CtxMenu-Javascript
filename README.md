@@ -54,8 +54,9 @@ var contextMenu = CtxMenu(myElement);
 ### CtxMenu Functions:
 
 **addItem()**
+
 | Arguments | Description |
 | --- | --- |
-| text (required) | The text that will be displayed in the menu |
-| function (required) | The function to be called when the item is clicked. |
-| icon (optional) | Url to an icon to be displayed before the text |
+| text | The text that will be displayed in the menu |
+| function | The function to be called when the item is clicked |
+| icon | Url to an icon to be displayed before the text |
