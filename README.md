@@ -70,7 +70,7 @@ myContextMenu.addItem("Text Here", myFunction, "myIcon.png");
 
 
 **insertItem(**
-index, text, function, icon **)**
+index, text, function, ?icon **)**
 
 _Insert a new item into the menu at given position_
 
