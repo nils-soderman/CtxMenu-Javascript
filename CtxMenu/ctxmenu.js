@@ -42,7 +42,13 @@ class CtxMenuManagerClass {
 			var elementClicked = e.target;
 		}
 
-		if (menu != null) {
+		if (menu == false){
+			e.preventDefault();
+		}
+		else if (menu == true){
+			this.closeCurrentlyOpenedMenu();
+		}
+		else if (menu != null) {
 			// Open the menu
 			this.closeCurrentlyOpenedMenu();
 			menu._elementClicked = elementClicked;
@@ -118,8 +124,12 @@ class CtxMenuManagerClass {
 	};
 
 	blockContextMenu(element){
-		this._ctxMenus(element,  null);
+		this._ctxMenus.set(element,  false);
 	};
+
+	setDefaultContextMenu(element){
+		this._ctxMenus.set(element,  true);
+	}
 
 };
 
@@ -255,6 +265,7 @@ class CtxMenuClass {
 }
 
 function CtxMenu(element){
+	// Initialize a context meun
 	if (element == undefined){
 		element = document;
 	}
@@ -268,6 +279,11 @@ function CtxMenu(element){
 function CtxMenuBlock(element){
 	// Block the context menu from appearing on an element
 	ctxMenuManager.blockContextMenu(element);
+}
+
+function CtxMenuDefault(element){
+	// Set an element to use the browsers default context menu
+	ctxMenuManager.setDefaultContextMenu(element);
 }
 
 function CtxCloseCurrentlyOpenedMenus(){
