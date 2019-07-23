@@ -82,7 +82,7 @@ _Insert a new item into the menu at given position_
 | icon | Url to an icon to be displayed before the text |
 
 ```javascript
-myContextMenu.addItem(0, "Text Here", myFunction, "myIcon.png");
+myContextMenu.insertItem(0, "Text Here", myFunction, "myIcon.png");
 ```
 
 
