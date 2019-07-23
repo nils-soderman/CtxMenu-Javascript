@@ -1,10 +1,5 @@
-:root {
-  --ctx-background-color: brown;
-  --ctx-font:;
-}
-
 @font-face {
-  font-family: 'Myname';
+  font-family: 'CtxMenuFont';
   font-style: normal;
   font-weight: 300;
   src: local('Segoe UI');
@@ -32,7 +27,7 @@
   border-radius: 1px;
 
 
-  font-family: "Myname";
+  font-family: "CtxMenuFont";
   font-size: 12px;
 
   /* Make all the elements un-selectable */
