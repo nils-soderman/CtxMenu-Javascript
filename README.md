@@ -11,7 +11,7 @@ Customizable right click context menus for your website.
 3. Add the script to the html code of the pages where you'd like to use it 
 
 ```html
-<script type="text/javascript" src="./CtxMenu/CtxMenu.js"></script>
+<script type="text/javascript" src="./ctxmenu.min/ctxmenu.min.js"></script>
 ```
 _Note: You must ensure the "src" of the script points to the location of the script on your server._
 
