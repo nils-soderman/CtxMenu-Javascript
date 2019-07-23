@@ -34,21 +34,21 @@ contextMenu.addItem("Hello World", function(){
 // Examples of different ways to initialize a context menu:
 
 // Initialize a context menu for the entire page
-var contextMenu = CtxMenu();
+var myContextMenu = CtxMenu();
 
 // Initialize a context menu for a element defined by it's id
-var contextMenu = CtxMenu("#example");
+var myContextMenu = CtxMenu("#example");
 
 // Initialize a context menu for a element defined by it's class
-var contextMenu = CtxMenu(".example");
+var myContextMenu = CtxMenu(".example");
 
 // Initialize a context menu for all types of a certain element by using a nodeName
 // The example below will create a context menu for all paragraphs on the page (<p></p>)
-var contextMenu = CtxMenu("p");
+var myContextMenu = CtxMenu("p");
 
 // Initialize a context menu for a element variable
 var myElement = document.getElementById("example");
-var contextMenu = CtxMenu(myElement);
+var myContextMenu = CtxMenu(myElement);
 ```
 
 ### CtxMenu Functions:
