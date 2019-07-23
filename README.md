@@ -13,7 +13,7 @@ Customizable right click context menus for your website.
 ```html
 <script type="text/javascript" src="./ctxmenu.min/ctxmenu.min.js"></script>
 ```
-_Note: You must ensure the "src" of the script points to the location of the script on your server._
+_Note: You must ensure the "src" points to the location of the script on your server._
 
 ## Getting Started
 The basic setup of a menu:
