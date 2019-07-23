@@ -6,7 +6,7 @@ Customizable right click context menus for your website.
 ## Installation
 
 
-1. [Download]() the latest version
+1. [Download](https://github.com/nils-soderman/CtxMenu-Javascript/releases) the latest version
 2. Upload the CtxMenu folder to your server
 3. Add the script to the html code of the pages where you'd like to use it 
 
