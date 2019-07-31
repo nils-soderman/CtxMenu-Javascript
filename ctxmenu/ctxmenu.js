@@ -101,13 +101,18 @@ class CtxMenuManagerClass {
 		if (this._ctxMenus.has(element)) {
 			return this._ctxMenus.get(element);
 		}
-		else if(this._ctxMenus.has("#"+element.id)){
+		if(this._ctxMenus.has("#"+element.id)){
 			return this._ctxMenus.get("#"+element.id);
 		}
-		else if(this._ctxMenus.has("."+element.className)){
-			return this._ctxMenus.get("."+element.className);
+		if (element.className != undefined){
+			var classNames = element.className.split(" ");
+			for(var i = 0; i < classNames.length; i++) {
+				if(this._ctxMenus.has("."+classNames[i])){
+					return this._ctxMenus.get("."+classNames[i]);
+				}
+			}
 		}
-		else if (this._ctxMenus.has(element.nodeName)) {
+		if (this._ctxMenus.has(element.nodeName)) {
 			return this._ctxMenus.get(element.nodeName);
 		}
 		return null;
