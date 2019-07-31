@@ -20,7 +20,7 @@
 .ctx-menu-wrapper {
 
   background-color: rgb(250, 250, 250);
-  box-shadow: 4px 4px 3px -2px #888888;
+  box-shadow: 4px 4px 3px -2px rgba(0, 0, 0, .1);
 
   padding: 3px 0 3px 0;
   border: 1px solid #b1b1b1;
