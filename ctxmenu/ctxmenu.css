@@ -63,7 +63,8 @@
 /* Icons */
 
 .ctx-menu-hasIcon img {
-  width: 16px;
+  min-width: 16px;
+  max-width: 16px;
   max-height: 16px;
   position: relative;
   margin-right: 8px;
