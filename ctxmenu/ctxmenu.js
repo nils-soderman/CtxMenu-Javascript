@@ -184,11 +184,11 @@ class CtxMenuClass {
 		return item;
 	}
 
-	addSeperator(){
+	addSeperator(index = undefined){
 		// Add a seperator
 		var seperator = document.createElement("div");
 		seperator.className = ECtxMenuNames.seperator;
-		this.menuContainer.appendChild(seperator);
+		this.menuContainer.insertBefore(seperator, this.menuContainer.childNodes[index]);
 	}
 
 	removeItem(item) {
