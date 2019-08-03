@@ -1,7 +1,9 @@
 # CtxMenu (Javascript)
 Customizable right click context menus for your website.
 
-[demo (wip)](https://nilssoderman.com/code/ctxmenu)
+![preview](https://i.imgur.com/SaBFHEy.png)
+
+[demo](https://nilssoderman.com/code/ctxmenu)
 
 ## Installation
 
@@ -54,7 +56,7 @@ var myContextMenu = CtxMenu(myElement);
 ### CtxMenu Functions:
 
 **addItem(**
-text, function, ?icon **)**
+text, function, ?icon, ?index **)**
 
 _Appends a new item to the menu._
 
@@ -63,27 +65,12 @@ _Appends a new item to the menu._
 | text | The text that will be displayed in the menu |
 | function | The function to be called when the item is clicked |
 | icon | Url to an icon to be displayed before the text |
+| index | The list index where to insert the item |
 
 ```javascript
 myContextMenu.addItem("Text Here", myFunction, "myIcon.png");
 ```
 
-
-**insertItem(**
-index, text, function, ?icon **)**
-
-_Insert a new item into the menu at given position_
-
-| Arguments | Description |
-| --- | --- |
-| index | The list index where the item will be placed |
-| text | The text that will be displayed in the menu |
-| function | The function to be called when the item is clicked |
-| icon | Url to an icon to be displayed before the text |
-
-```javascript
-myContextMenu.insertItem(0, "Text Here", myFunction, "myIcon.png");
-```
 
 
 **addSeperator()**
