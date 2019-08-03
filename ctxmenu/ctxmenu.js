@@ -7,7 +7,7 @@
 ECtxMenuNames = {
 	menu: 			"ctx-menu-wrapper",
 	item: 			"ctx-menu-item",
-	seperator:	"ctx-menu-seperator",
+	seperator:		"ctx-menu-seperator",
 	hasIcon: 		"ctx-menu-hasIcon"
 };
 
@@ -33,13 +33,14 @@ class CtxMenuManagerClass {
 	};
 
 	_eventOpenMenu(e){
-		var menu = null;
 		if (e.path != undefined) {
-			 menu = this._traceCtxMenu(e.path);
-			 var elementClicked = e.path[0];
+			 var menuAndElement = this._traceCtxMenu(e.path);
+			 var menu = menuAndElement[0];
+			 var elementClicked = menuAndElement[1];
 		} else {
-			menu = this._msEdgeTraceCtxMenu(e.target);
-			var elementClicked = e.target;
+			var menuAndElement = this._msEdgeTraceCtxMenu(e.target);
+			var menu = menuAndElement[0];
+			var elementClicked = menuAndElement[1];
 		}
 
 		if (menu == false){
@@ -84,7 +85,7 @@ class CtxMenuManagerClass {
 		for (var i = 0; i < path.length; ++i) {
 			var menu = this._ctxMenusHas(path[i]);
 			if (menu != null){
-				return menu;
+				return [menu, path[i]];
 			}
 		}
 		return null;
@@ -94,19 +95,19 @@ class CtxMenuManagerClass {
 		while (element != null) {
 			var menu = this._ctxMenusHas(element);
 			if (menu != null){
-				return menu;
+				return [menu, element];
 			}
 			element = element.parentNode;
 		}
 		return null;
-	}
+	};
 
 	_ctxMenusHas(element){
 		if (this._ctxMenus.has(element)) {
 			return this._ctxMenus.get(element);
 		}
 		if(this._ctxMenus.has("#"+element.id)){
-			return this._ctxMenus.get("#"+element.id);
+			return   this._ctxMenus.get("#"+element.id);
 		}
 		if (element.className != undefined){
 			var classNames = element.className.split(" ");
@@ -120,25 +121,21 @@ class CtxMenuManagerClass {
 			return this._ctxMenus.get(element.nodeName);
 		}
 		return null;
-	}
+	};
 
 	getMenuFromElement(element){
 		return this._ctxMenus.get(element);
 	};
 
 	createNewMenu(element){
-		var menu = new CtxMenuClass(element);
+		var menu = new CtxMenuClass();
 		this._ctxMenus.set(element, menu);
 		return menu;
 	};
 
-	blockContextMenu(element){
-		this._ctxMenus.set(element,  false);
+	setCustomContexMenuValue(element, value){
+		this._ctxMenus.set(element,  value);
 	};
-
-	setDefaultContextMenu(element){
-		this._ctxMenus.set(element,  true);
-	}
 
 };
 
@@ -164,7 +161,7 @@ class CtxMenuItem {
 }
 
 class CtxMenuClass {
-	constructor(element){
+	constructor(){
 
 		// Add the html to the body and hide it
 		this.menuContainer = document.createElement("div");
@@ -201,13 +198,13 @@ class CtxMenuClass {
 
 	addEventListener(type, listener){
 		if (type == "open"){
-			this._openEventListener = Listener;
+			this._openEventListener = listener;
 		}
 		else if (type == "close") {
-			this._closeEventListener = Listener;
+			this._closeEventListener = listener;
 		}
 		else if (type == "click") {
-			this._clickEventListener = Listener;
+			this._clickEventListener = listener;
 		}
 	}
 
@@ -281,12 +278,12 @@ function CtxMenu(element){
 
 function CtxMenuBlock(element){
 	// Block the context menu from appearing on an element
-	ctxMenuManager.blockContextMenu(element);
+	ctxMenuManager.setCustomContexMenuValue(element, false);
 }
 
 function CtxMenuDefault(element){
 	// Set an element to use the browsers default context menu
-	ctxMenuManager.setDefaultContextMenu(element);
+	ctxMenuManager.setCustomContexMenuValue(element, true);
 }
 
 function CtxCloseCurrentlyOpenedMenus(){
