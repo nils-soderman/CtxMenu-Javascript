@@ -176,14 +176,8 @@ class CtxMenuClass {
 		this._clickEventListener = undefined;
 	}
 
-	addItem(text, customFunction, icon = undefined) {
+	addItem(text, customFunction, icon = undefined, index = undefined) {
 		// Add an item to the menu
-		var item = this._createMenuItem(text, customFunction, icon);
-		this.menuContainer.appendChild(item.element);
-		return item;
-	}
-
-	insertItem(index, text, customFunction, icon = undefined){
 		var item = this._createMenuItem(text, customFunction, icon);
 		this.menuContainer.insertBefore(item.element, this.menuContainer.childNodes[index]);
 		return item;
