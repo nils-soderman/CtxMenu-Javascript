@@ -54,7 +54,10 @@ class CtxMenuManagerClass {
 			menu._elementClicked = elementClicked;
 			menu.openMenu(e.clientX, e.clientY);
 			this._currentMenuVisible = menu;
+
+			// Add event listeners to close the window
 			document.addEventListener("click", CtxCloseCurrentlyOpenedMenus);
+			window.addEventListener("resize", CtxCloseCurrentlyOpenedMenus);
 			e.preventDefault();
 			if(menu._openEventListener != undefined) {
 				menu._openEventListener();
@@ -68,6 +71,7 @@ class CtxMenuManagerClass {
 		menu.closeMenu();
 		this._currentMenuVisible = null;
 		document.removeEventListener("click", CtxCloseCurrentlyOpenedMenus);
+		window.removeEventListener("resize", CtxCloseCurrentlyOpenedMenus);
 	};
 
 	closeCurrentlyOpenedMenu(){
