@@ -34,36 +34,46 @@ class CtxMenuManagerClass {
 
 	_eventOpenMenu(e){
 		if (e.path != undefined) {
-			 var menuAndElement = this._traceCtxMenu(e.path);
-			 var menu = menuAndElement[0];
-			 var elementClicked = menuAndElement[1];
+			var menuAndElement = this._traceCtxMenu(e.path);
 		} else {
+			// Microsoft Edge
 			var menuAndElement = this._msEdgeTraceCtxMenu(e.target);
-			var menu = menuAndElement[0];
-			var elementClicked = menuAndElement[1];
 		}
+		
+		// Close any menu open right now
+		this.closeCurrentlyOpenedMenu();
+
+		if (menuAndElement == null) {
+			// Open default context menu if no custom menus where found.
+			return;
+		}
+
+		var menu = menuAndElement[0];
+		var elementClicked = menuAndElement[1];
 
 		if (menu == false){
+			// All context menus from appearing if the user has blocked the menu using CtxMenuBlock()
 			e.preventDefault();
+			return;
 		}
 		else if (menu == true){
-			this.closeCurrentlyOpenedMenu();
+			// Open the defaulty menu if user has set it to default using CtxMenuDefault()
+			return;
 		}
-		else if (menu != null) {
-			// Open the menu
-			this.closeCurrentlyOpenedMenu();
-			menu._elementClicked = elementClicked;
-			menu.openMenu(e.clientX, e.clientY);
-			this._currentMenuVisible = menu;
+		
+		// Open the menu
+		menu._elementClicked = elementClicked;
+		menu.openMenu(e.clientX, e.clientY);
+		this._currentMenuVisible = menu;
 
-			// Add event listeners to close the window
-			document.addEventListener("click", CtxCloseCurrentlyOpenedMenus);
-			window.addEventListener("resize", CtxCloseCurrentlyOpenedMenus);
-			e.preventDefault();
-			if(menu._openEventListener != undefined) {
-				menu._openEventListener();
-			}
+		// Add event listeners to close the window
+		document.addEventListener("click", CtxCloseCurrentlyOpenedMenus);
+		window.addEventListener("resize", CtxCloseCurrentlyOpenedMenus);
+		e.preventDefault();
+		if(menu._openEventListener != undefined) {
+			menu._openEventListener();
 		}
+		
 
 	};
 
