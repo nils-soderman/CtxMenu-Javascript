@@ -223,12 +223,12 @@ class CtxMenuClass {
 		// Set the screen position of the menu
 
 		// Ensure the menu doesn't go outside of the widnow
-		if (x + this.menuContainer.offsetWidth > window.innerWidth) {
-			x = window.innerWidth - this.menuContainer.offsetWidth - 1;
+		if (x + this.menuContainer.offsetWidth > document.documentElement.clientWidth) {
+			x = document.documentElement.clientWidth - this.menuContainer.offsetWidth - 1;
 		}
 
-		if (y + this.menuContainer.offsetHeight > window.innerHeight) {
-			y = window.innerHeight - this.menuContainer.offsetHeight - 1;
+		if (y + this.menuContainer.offsetHeight > document.documentElement.clientHeight) {
+			y = document.documentElement.clientHeight - this.menuContainer.offsetHeight - 1 ;
 		}
 
 		this.menuContainer.style.left = x + "px";
