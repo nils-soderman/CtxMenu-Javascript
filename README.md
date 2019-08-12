@@ -107,7 +107,7 @@ CtxMenuBlock("#MyClass");
 
 **CtxMenuDefault(** element **)**
 
-_Set the browsers default context menu on a specified menu. Useful if E.g. you create a custom context menu for the entire page but would like all text inputs to still use the default context menu._
+_Set the browsers default context menu on a specified element. Useful if E.g. you create a custom context menu for the entire page but would like all text inputs to still use the default context menu._
 
 ```javascript
 CtxMenuDefault(".MyClass");
