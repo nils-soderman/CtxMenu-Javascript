@@ -4,7 +4,7 @@
 * Repo: https://github.com/nils-soderman/Javascript-contextMenu
 */
 
-ECtxMenuNames = {
+const ECtxMenuNames = {
 	menu: 			"ctx-menu-wrapper",
 	item: 			"ctx-menu-item",
 	seperator:		"ctx-menu-seperator",
@@ -19,9 +19,9 @@ class CtxMenuManagerClass {
 
 		document.addEventListener('contextmenu', this._eventOpenMenu.bind(this));
 
-		var scripts = document.getElementsByTagName('script');
-		var path = scripts[scripts.length - 1].src.split('?')[0];
-		var CtxMenuDirectory = path.split('/').slice(0, -1).join('/') + '/';
+		const scripts = document.getElementsByTagName('script');
+		const path = scripts[scripts.length - 1].src.split('?')[0];
+		const CtxMenuDirectory = path.split('/').slice(0, -1).join('/') + '/';
 
 		// Load the stylesheet
 		var link = document.createElement( "link" );
@@ -48,8 +48,8 @@ class CtxMenuManagerClass {
 			return;
 		}
 
-		var menu = menuAndElement[0];
-		var elementClicked = menuAndElement[1];
+		const menu = menuAndElement[0];
+		const elementClicked = menuAndElement[1];
 
 		if (menu == false){
 			// All context menus from appearing if the user has blocked the menu using CtxMenuBlock()
@@ -93,7 +93,7 @@ class CtxMenuManagerClass {
 
 	_traceCtxMenu(path){
 		for (var i = 0; i < path.length; ++i) {
-			var menu = this._ctxMenusHas(path[i]);
+			const menu = this._ctxMenusHas(path[i]);
 			if (menu != null){
 				return [menu, path[i]];
 			}
@@ -103,7 +103,7 @@ class CtxMenuManagerClass {
 
 	_msEdgeTraceCtxMenu(element){
 		while (element != null) {
-			var menu = this._ctxMenusHas(element);
+			const menu = this._ctxMenusHas(element);
 			if (menu != null){
 				return [menu, element];
 			}
@@ -120,7 +120,7 @@ class CtxMenuManagerClass {
 			return   this._ctxMenus.get("#"+element.id);
 		}
 		if (element.className != undefined){
-			var classNames = element.className.split(" ");
+			const classNames = element.className.split(" ");
 			for(var i = 0; i < classNames.length; i++) {
 				if(this._ctxMenus.has("."+classNames[i])){
 					return this._ctxMenus.get("."+classNames[i]);
@@ -149,27 +149,6 @@ class CtxMenuManagerClass {
 
 };
 
-class CtxMenuItem {
-	constructor(text, customFunction, icon) {
-		this.function = customFunction;
-		this.text = text;
-
-		this.element = document.createElement("div");
-		this.element.className = ECtxMenuNames.item;
-
-		var iconElement = document.createElement("img");
-		if (icon != undefined && icon != null) {
-			iconElement.src = icon;
-			this.bHasIcon = true;
-		} else {
-			this.bHasIcon = false;
-		}
-		this.element.appendChild(iconElement);
-		this.element.innerHTML += this.text;
-
-	}
-}
-
 class CtxMenuClass {
 	constructor(){
 
@@ -179,6 +158,7 @@ class CtxMenuClass {
 		document.body.appendChild(this.menuContainer);
 		this.closeMenu();
 
+		this._items = [];
 		this._elementClicked = undefined;
 
 		// Event listeners
@@ -188,10 +168,33 @@ class CtxMenuClass {
 	}
 
 	addItem(text, customFunction, icon = undefined, index = undefined) {
-		// Add an item to the menu
-		var item = this._createMenuItem(text, customFunction, icon);
-		this.menuContainer.insertBefore(item.element, this.menuContainer.childNodes[index]);
-		return item;
+		var item = {};
+		// Create the element
+		var element = document.createElement("div");
+		element.className = ECtxMenuNames.item;
+
+		// Icon
+		var iconElement = document.createElement("img");
+		if (icon != undefined && icon != null) {
+			iconElement.src = icon;
+			var bHasIcon = true;
+		} else {
+			var bHasIcon = false;
+		}
+		element.appendChild(iconElement);
+
+		element.innerHTML += text;
+
+		element.addEventListener("click", function(){
+			this._callItem(customFunction);
+		}.bind(this));
+
+		if (bHasIcon){
+			this.menuContainer.classList.add(ECtxMenuNames.hasIcon);
+		}
+
+		this.menuContainer.insertBefore(element, this.menuContainer.childNodes[index]);
+		return element;
 	}
 
 	addSeperator(index = undefined){
@@ -228,7 +231,7 @@ class CtxMenuClass {
 		}
 
 		if (y + this.menuContainer.offsetHeight > document.documentElement.clientHeight) {
-			y = document.documentElement.clientHeight - this.menuContainer.offsetHeight - 1 ;
+			y = document.documentElement.clientHeight - this.menuContainer.offsetHeight - 1;
 		}
 
 		this.menuContainer.style.left = x + "px";
@@ -245,25 +248,12 @@ class CtxMenuClass {
 		}
 	}
 
-	_createMenuItem(text, customFunction, icon){
-		var item = new CtxMenuItem(text, customFunction, icon);
-		item.element.addEventListener("click", function(){
-			this._callItem(item);
-		}.bind(this));
-
-		if (item.bHasIcon){
-			this.menuContainer.classList.add(ECtxMenuNames.hasIcon);
-		}
-
-		return item;
-	}
-
-	_callItem(item){
+	_callItem(customFunction){
 		// Called when an item has been clicked
 		this.closeMenu();
 		// Delay function one tick so the page has time to redraw the page and hide the context menu
 		setTimeout(function(){
-			item.function(this._elementClicked);
+			customFunction(this._elementClicked);
 			if (this._clickEventListener != undefined) {
 				this._clickEventListener(item);
 			}
