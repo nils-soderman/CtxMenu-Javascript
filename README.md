@@ -17,6 +17,8 @@ Customizable right click context menus for your website.
 ```
 _Note: You must ensure the "src" points to the location of the script on your server._
 
+<br />
+
 ## Getting Started
 The basic setup of a menu:
 ```javascript
@@ -28,10 +30,11 @@ contextMenu.addItem("Hello World", function(){
   alert("Hello World!")
   });
 ```
+<br /><br />
 
 ## Documentation
 
-**CtxMenu Initialization:**
+### CtxMenu Initialization:
 ```javascript
 // Examples of different ways to initialize a context menu:
 
@@ -52,11 +55,13 @@ var myContextMenu = CtxMenu("p");
 var myElement = document.getElementById("example");
 var myContextMenu = CtxMenu(myElement);
 ```
+<br />
 
 ### CtxMenu Functions:
 
-**addItem(**
-text, function, ?icon, ?index **)**
+<br />
+
+**addItem(** text, function, ?icon, ?index **)**
 
 _Appends a new item to the menu._
 
@@ -68,14 +73,42 @@ _Appends a new item to the menu._
 | index | The list index where to insert the item |
 
 ```javascript
-myContextMenu.addItem("Text Here", myFunction, "myIcon.png");
+myContextMenu.addItem("Text Here", myFunction, icon = "myIcon.png", index = 0);
 ```
 
 
+<br /><br />
 
-**addSeperator()**
+**addSeperator(** ?index **)**
 
 _Adds a horizontal line to the menu_
+
+| Arguments | Description |
+| --- | --- |
+| index | The list index where to insert the item |
+
 ```javascript
-myContextMenu.addSeperator();
+myContextMenu.addSeperator(index = 1);
+```
+
+<br />
+
+### Other Functions:
+<br />
+
+**CtxMenuBlock(** element **)**
+
+_Block all context menus for this element (nothing will happen on right click)_
+
+```javascript
+CtxMenuBlock("#MyClass");
+```
+<br />
+
+**CtxMenuDefault(** element **)**
+
+_Set the browsers default context menu on a specified element. Useful if E.g. you create a custom context menu for the entire page but would like all text inputs to still use the default context menu._
+
+```javascript
+CtxMenuDefault(".MyClass");
 ```
