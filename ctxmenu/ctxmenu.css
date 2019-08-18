@@ -68,7 +68,8 @@
   max-height: 16px;
   position: relative;
   margin-right: 8px;
-
+  pointer-events: none;
+  user-select: none;
 }
 .ctx-menu-item img[src] {
   float: left;
