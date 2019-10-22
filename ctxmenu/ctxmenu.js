@@ -63,7 +63,7 @@ class CtxMenuManagerClass {
 		
 		// Open the menu
 		menu._elementClicked = elementClicked;
-		menu.openMenu(e.clientX, e.clientY);
+		menu.openMenu(e.pageX, e.pageY);
 		this._currentMenuVisible = menu;
 
 		// Add event listeners to close the window
@@ -226,12 +226,14 @@ class CtxMenuClass {
 		// Set the screen position of the menu
 
 		// Ensure the menu doesn't go outside of the widnow
-		if (x + this.menuContainer.offsetWidth > document.documentElement.clientWidth) {
-			x = document.documentElement.clientWidth - this.menuContainer.offsetWidth - 1;
+		const PageWidth = (document.documentElement.clientWidth + document.documentElement.scrollLeft);
+		const PageHeight = (document.documentElement.clientHeight + document.documentElement.scrollTop);
+		if (x + this.menuContainer.offsetWidth > PageWidth) {
+			x = PageWidth - this.menuContainer.offsetWidth - 1;
 		}
 
-		if (y + this.menuContainer.offsetHeight > document.documentElement.clientHeight) {
-			y = document.documentElement.clientHeight - this.menuContainer.offsetHeight - 1;
+		if (y + this.menuContainer.offsetHeight > PageHeight) {
+			y = PageHeight - this.menuContainer.offsetHeight - 1;
 		}
 
 		this.menuContainer.style.left = x + "px";
