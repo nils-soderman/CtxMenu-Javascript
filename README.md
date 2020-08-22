@@ -79,7 +79,7 @@ myContextMenu.addItem("Text Here", myFunction, icon = "myIcon.png", index = 0);
 
 <br /><br />
 
-**addSeperator(** ?index **)**
+**addSeparator(** ?index **)**
 
 _Adds a horizontal line to the menu_
 
@@ -88,7 +88,7 @@ _Adds a horizontal line to the menu_
 | index | The list index where to insert the item |
 
 ```javascript
-myContextMenu.addSeperator(index = 1);
+myContextMenu.addSeparator(index = 1);
 ```
 
 <br />
