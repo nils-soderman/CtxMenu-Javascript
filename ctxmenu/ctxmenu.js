@@ -7,7 +7,7 @@
 const ECtxMenuNames = {
 	menu: 			"ctx-menu-wrapper",
 	item: 			"ctx-menu-item",
-	seperator:		"ctx-menu-seperator",
+	separator:		"ctx-menu-separator",
 	hasIcon: 		"ctx-menu-hasIcon"
 };
 
@@ -197,11 +197,11 @@ class CtxMenuClass {
 		return element;
 	}
 
-	addSeperator(index = undefined){
-		// Add a seperator
-		var seperator = document.createElement("div");
-		seperator.className = ECtxMenuNames.seperator;
-		this.menuContainer.insertBefore(seperator, this.menuContainer.childNodes[index]);
+	addSeparator(index = undefined){
+		// Add a separator
+		var separator = document.createElement("div");
+		separator.className = ECtxMenuNames.separator;
+		this.menuContainer.insertBefore(separator, this.menuContainer.childNodes[index]);
 	}
 
 	removeItem(item) {
