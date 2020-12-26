@@ -7,7 +7,7 @@
 
 /* Background that covers entire page when right clicking, invisible by default */
 #ctx-menu-background {
-  /* background-color: rgba(0, 0, 0, 0.1);  Tint entire page darker when context menu appears */
+  /* background-color: rgba(0, 0, 0, 0.1); Un-comment to tint entire page darker when context menu appears */
   position: absolute;
   top: 0;
   left: 0;
@@ -16,16 +16,17 @@
   z-index: 998;
 }
 
-/* The Context Menu itself */
-.ctx-menu-wrapper {
+/* - - - - - - -
+  Context Menu 
+- - - - - - - - */
 
+.ctx-menu-wrapper {
   background-color: rgb(250, 250, 250);
   box-shadow: 4px 4px 3px -2px rgba(0, 0, 0, .1);
 
   padding: 3px 0 3px 0;
   border: 1px solid #b1b1b1;
   border-radius: 1px;
-
 
   font-family: "CtxMenuFont";
   font-size: 12px;
@@ -40,11 +41,14 @@
   /* Do not edit these properties */
   position: absolute;
   z-index: 999;
-  white-space:nowrap;
+  white-space: nowrap;
 
 }
 
-/* Context Menu Items */
+/* - - - - - - -
+  Context Menu Items 
+- - - - - - - - */
+
 .ctx-menu-item {
   padding: 2px 10px 2px 10px;
   border-radius: 1px;
@@ -61,7 +65,15 @@
   background-color: rgba(0,0,0,0.2);
 }
 
-/* Icons */
+.ctx-menu-separator {
+  height: 1px;
+  margin: 3px 0 3px 0;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* - - - - - - -
+      Icons
+- - - - - - - - */
 
 .ctx-menu-hasIcon img {
   min-width: 16px;
@@ -72,17 +84,12 @@
   pointer-events: none;
   user-select: none;
 }
+
 .ctx-menu-item img[src] {
   float: left;
 }
 
 .ctx-menu-hasIcon .ctx-menu-item {
-  vertical-align:middle;
+  vertical-align: middle;
   max-height: 20px;
-}
-
-.ctx-menu-separator {
-  height: 1px;
-  margin: 3px 0 3px 0;
-  background-color: rgba(0, 0, 0, 0.2);
 }

@@ -260,8 +260,6 @@ class CtxMenuClass {
 				this._clickEventListener(item);
 			}
 		}.bind(this), 1);
-
-
 	}
 
 }
