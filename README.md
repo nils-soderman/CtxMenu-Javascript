@@ -1,9 +1,11 @@
 # CtxMenu (Javascript)
-Customizable right click context menus for your website.
+A modern, light weight, class based solution for adding right click context menus for your website.
 
 ![preview](https://i.imgur.com/SaBFHEy.png)
 
 [demo](https://nilssoderman.com/code/ctxmenu)
+
+*IE is currently not supported.
 
 ## Installation
 
