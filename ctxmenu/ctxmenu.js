@@ -8,7 +8,8 @@ const ECtxMenuNames = {
 	menu: 			"ctx-menu-wrapper",
 	item: 			"ctx-menu-item",
 	separator:		"ctx-menu-separator",
-	hasIcon: 		"ctx-menu-hasIcon"
+	hasIcon: 		"ctx-menu-hasIcon",
+	darkInvert: 	"ctx-menu-darkInvert",
 };
 
 
@@ -167,8 +168,7 @@ class CtxMenuClass {
 		this._clickEventListener = undefined;
 	}
 
-	addItem(text, customFunction, icon = undefined, index = undefined) {
-		var item = {};
+	addItem(text, customFunction, icon = undefined, index = undefined, bInvertIconDarkMode = false) {
 		// Create the element
 		var element = document.createElement("div");
 		element.className = ECtxMenuNames.item;
@@ -178,6 +178,9 @@ class CtxMenuClass {
 		if (icon != undefined && icon != null) {
 			iconElement.src = icon;
 			var bHasIcon = true;
+			console.log(bInvertIconDarkMode)
+			if (bInvertIconDarkMode)
+				iconElement.className = ECtxMenuNames.darkInvert;
 		} else {
 			var bHasIcon = false;
 		}
@@ -210,14 +213,13 @@ class CtxMenuClass {
 	}
 
 	addEventListener(type, listener){
-		if (type == "open"){
-			this._openEventListener = listener;
-		}
-		else if (type == "close") {
-			this._closeEventListener = listener;
-		}
-		else if (type == "click") {
-			this._clickEventListener = listener;
+		switch (type) {
+			case "open":
+				this._openEventListener = listener;
+			case "close": 
+				this._closeEventListener = listener;
+			case "click":
+				this._clickEventListener = listener;
 		}
 	}
 
@@ -261,11 +263,10 @@ class CtxMenuClass {
 			}
 		}.bind(this), 1);
 	}
-
 }
 
 function CtxMenu(element){
-	// Initialize a context meun
+	// Initialize a context menu
 	if (element == undefined){
 		element = document;
 	}
@@ -273,7 +274,6 @@ function CtxMenu(element){
 		return ctxMenuManager.getMenuFromElement(element);
 	}
 	return ctxMenuManager.createNewMenu(element);
-
 }
 
 function CtxMenuBlock(element){
