@@ -1,11 +1,9 @@
 # CtxMenu (Javascript)
-A modern, light weight, class based solution for adding right click context menus for your website.
+A modern, light weight, object oriented solution for adding right click context menus for your website.
 
 ![preview](https://i.imgur.com/SaBFHEy.png)
 
 [demo](https://nilssoderman.com/code/ctxmenu)
-
-*IE is currently not supported.
 
 ## Installation
 
@@ -74,10 +72,15 @@ _Appends a new item to the menu._
 | icon | Url to an icon to be displayed before the text |
 | index | The list index where to insert the item |
 
-```javascript
-myContextMenu.addItem("Text Here", myFunction, icon = "myIcon.png", index = 0);
-```
+| Return Value |
+| --- |
+The DIV element of the created seperator
 
+<br>
+
+```javascript
+myItem = myContextMenu.addItem("Text Here", myFunction, icon = "myIcon.png", index = 0);
+```
 
 <br /><br />
 
@@ -89,11 +92,49 @@ _Adds a horizontal line to the menu_
 | --- | --- |
 | index | The list index where to insert the item |
 
+| Return Value |
+| --- |
+The DIV element of the created seperator
+<br>
+
 ```javascript
-myContextMenu.addSeparator(index = 1);
+mySeparator = myContextMenu.addSeparator(index = 1);
+```
+
+<br /><br />
+
+**getItems()**
+
+_Get all items in the context menu._
+
+| Return Value |
+| --- |
+A list with all of the DIV elements
+
+```javascript
+myItems = myContextMenu.getItems();
+```
+
+<br /><br />
+
+**getItemAtIndex(** index **)**
+
+_Get the DIV of an item based on the index. This includes separators too_
+
+| Arguments | Description |
+| --- | --- |
+| index | The index of the item |
+
+| Return Value |
+| --- |
+The DIV element
+
+```javascript
+myItem = myContextMenu.getItemAtIndex(0);
 ```
 
 <br />
+
 
 ### Other Functions:
 <br />

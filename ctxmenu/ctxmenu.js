@@ -152,14 +152,12 @@ class CtxMenuManagerClass {
 
 class CtxMenuClass {
 	constructor(){
-
 		// Add the html to the body and hide it
 		this.menuContainer = document.createElement("div");
 		this.menuContainer.className = ECtxMenuNames.menu;
 		document.body.appendChild(this.menuContainer);
 		this.closeMenu();
 
-		this._items = [];
 		this._elementClicked = undefined;
 
 		// Event listeners
@@ -205,11 +203,15 @@ class CtxMenuClass {
 		var separator = document.createElement("div");
 		separator.className = ECtxMenuNames.separator;
 		this.menuContainer.insertBefore(separator, this.menuContainer.childNodes[index]);
+		return separator
 	}
 
-	removeItem(item) {
-		// Remove an item from the menu
-		this.menuContainer.removeChild(item.element);
+	getItems() {
+		return this.menuContainer.childNodes
+	}
+
+	getItemAtIndex(index) {
+		return this.menuContainer.childNodes[index]
 	}
 
 	addEventListener(type, listener){

@@ -1,2 +1,5 @@
 ctxmenu.min
 ctxmenu.min.zip
+node_modules
+.eslintrc.js
+package.json
